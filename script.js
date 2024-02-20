@@ -15,20 +15,94 @@ const gameBoard = (function() {
 
   // print board
   const printBoard = () => console.log(board);
-})()
+  // get board
+  const getBoard = () => board;
+
+  return { printBoard, getBoard };
+})();
 
 // PLAYER
 
 function player(symbol) {
-  const symbol = symbol;
+  const board = gameBoard.getBoard();
   let hasWon = false;
+
+  const placeMark = function(row, column) {
+    row = prompt("Enter Row:")
+    column = prompt("Enter Column:")
+    if (!(board[row][column].length)) {
+      board[row][column].push(symbol);
+    } else {
+      alert("That space is taken!");
+      placeMark();
+    }
+  }
+
+  return { placeMark, hasWon, symbol };
 }
 
 // CONTROLLER
 
 const gameController = (function() {
-})()
+  const player1 = player("X");
+  const player2 = player("O");
+  const board = gameBoard.getBoard();
+
+  let activePlayer = player1;
+
+  const getActivePlayer = () => activePlayer;
+  const switchPlayer = () => {
+    if (activePlayer == player1) {
+      activePlayer = player2;
+    } else {
+      activePlayer = player1;
+    };
+  };
+  const newRound = () => gameBoard.printBoard();
+  const winMessage = () => alert("You won!");
+  const checkWin = () => {
+    // check for filled rows
+    for (row of board) {
+      rowValues = row.join('');
+      if ((rowValues == ("XXX")) || (rowValues == ("OOO"))) {
+        activePlayer.hasWon = true;
+        winMessage();
+    }
+    }
+    // check for filled columns
+    for (i = 0; i < 3; i ++) {
+      columns = []
+      for (row of board) {
+        columns.concat(row[i]);
+      }
+      colValues = columns.join('');
+      if ((colValues == ("XXX")) || (colValues == ("OOO"))) {
+        activePlayer.hasWon = true;
+        winMessage();
+      }
+    }
+    // check for diagonals
+    diagonal1 = [].concat(board[0][0], board[1][1], board[2][2]);
+    diagonal2 = [].concat(board[0][2], board[1][1], board[2][0]);
+    if (
+      (diagonal1.join('') == "XXX") || (diagonal1.join('') == "OOO") 
+      || 
+      (diagonal2.join('') == "XXX") || (diagonal2.join('') == "OOO")
+      ) {
+      activePlayer.hasWon = true;
+      winMessage();
+    }
+  }
+
+  const playRound = () => {
+    activePlayer.placeMark();
+    newRound();
+    checkWin();
+    switchPlayer();
+  }
+  return { getActivePlayer, switchPlayer, newRound, playRound }
+})();
 
 // TESTING
 
-gameBoard.printBoard();
+// gameBoard.printBoard();
