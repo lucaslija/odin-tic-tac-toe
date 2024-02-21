@@ -17,7 +17,22 @@ const gameBoard = (function() {
   // get board
   const getBoard = () => board;
 
-  return { printBoard, getBoard };
+  // fill board (for testing)
+  const fillBoard = () => {
+    let symbol = "X";
+    for (let row of board) {
+      for (let col of row) {
+        col.push(symbol);
+        if (symbol == "X") {
+          symbol = "O";
+        } else if (symbol == "O") {
+          symbol = "X";
+        }
+      }
+    }
+  }
+
+  return { printBoard, getBoard, fillBoard };
 })();
 
 // PLAYER
@@ -99,7 +114,23 @@ const gameController = (function() {
     checkWin();
     switchPlayer();
   }
-  return { getActivePlayer, switchPlayer, newRound, playRound }
+  return { board, getActivePlayer, switchPlayer, newRound, playRound }
+})();
+
+// DOM
+const DOMController = (function() {
+  const grid = document.getElementById("grid");
+  cells = grid.children;
+
+  const renderBoard = (board) => {
+    let flatBoard = board.flat();
+    for (i = 0; i < cells.length; i++) {
+      console.log(i);
+      cells[i].innerText = flatBoard[i];
+    }
+  }
+
+  return { grid, renderBoard };
 })();
 
 // TESTING
