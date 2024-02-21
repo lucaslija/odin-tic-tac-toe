@@ -6,7 +6,7 @@
 }
 
 body {
- background: seagreen;
+ background: black;
  color: white;
  -webkit-font-smoothing: antialiased;
 }
@@ -18,4 +18,30 @@ body, input, button {
 
 button {
  cursor: pointer;
+}
+
+main {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#grid {
+  height: 90vw;
+  width: 90vw;
+  background-color: white;
+  display: grid;
+  gap: 5px;
+  grid-template-areas: 
+              "1 2 3"
+              "4 5 6"
+              "7 8 9";
+}
+
+.cell {
+  width: 30vw;
+  height: 30vw;
+  background-color: black;
 }

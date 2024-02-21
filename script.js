@@ -4,7 +4,6 @@ const gameBoard = (function() {
   const board = [];
   const rows = 3;
   const columns = 3;
-
   // construct 2d array representing the board
   for (let i = 0; i < rows; i++) {
     board[i] = [];
