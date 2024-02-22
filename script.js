@@ -128,27 +128,27 @@ const DOMController = (function() {
   const renderBoard = (board) => {
     let flatBoard = board.flat();
     for (i = 0; i < cells.length; i++) {
-      console.log(i);
       cells[i].innerText = flatBoard[i];
     }
   }
 
-  return { grid, cells, renderBoard };
+  const markCell = (event) => {
+    player = gameController.getActivePlayer();
+    player.placeMark(event.target);
+    gameController.switchPlayer();
+    DOMController.renderBoard(gameBoard.getBoard());
+  }
+
+  const addEventListeners = (cells) => {
+    for (let i = 0; i < cells.length; i++) {
+      cells[i].addEventListener("click", markCell);
+    }
+  }
+
+  return { renderBoard, addEventListeners };
 })();
 
-player = gameController.getActivePlayer();
-
-const markCell = (event) => {
-  console.log("Cell Clicked");
-  console.log(event.target);
-  player.placeMark(event.target);
-  DOMController.renderBoard(gameBoard.getBoard());
-}
-
-for (let i = 0; i < cells.length; i++) {
-  console.log(cells[i]);
-  cells[i].addEventListener("click", markCell);
-}
+DOMController.addEventListeners(cells);
 
 // TESTING
 
