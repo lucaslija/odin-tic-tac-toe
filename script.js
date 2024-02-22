@@ -48,8 +48,10 @@ function player(symbol) {
     if (!(cell.hasChildNodes())) {
       flatBoard[index].push(symbol);
     } else {
-      // apply pseudoclass for red
-      // setTimeout(removePseudoClass, delay);
+      // apply class for red
+      cell.classList.add("invalid");
+      // setTimeout(removeClass, delay);
+      setTimeout((() => cell.classList.remove("invalid")), 200);
     }
   }
 

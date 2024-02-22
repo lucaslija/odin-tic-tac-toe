@@ -46,8 +46,14 @@ main {
   height: 30vh;
   width: 30vh; 
   background-color: black;
+  transition: background-color .2s ease-in-out;
   font-size: 10em;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.cell.invalid {
+  background-color: red;
+  transition: background-color .2s ease-in-out;
 }
