@@ -44,8 +44,9 @@ main {
 
 .cell {
   height: 30vh;
+  width: 30vh; 
   background-color: black;
-  font-size: 30vh;
+  font-size: 10em;
   display: flex;
   justify-content: center;
   align-items: center;
