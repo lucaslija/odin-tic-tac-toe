@@ -48,7 +48,8 @@ function player(symbol) {
     if (!(cell.hasChildNodes())) {
       flatBoard[index].push(symbol);
     } else {
-      alert("That space is taken!");
+      // apply pseudoclass for red
+      // setTimeout(removePseudoClass, delay);
     }
   }
 
