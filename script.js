@@ -51,7 +51,7 @@ function player(symbol) {
       // apply class for red
       cell.classList.add("invalid");
       // setTimeout(removeClass, delay);
-      setTimeout((() => cell.classList.remove("invalid")), 200);
+      setTimeout((() => cell.classList.remove("invalid")), 150);
     }
   }
 
