@@ -39,16 +39,16 @@ const gameBoard = (function() {
 
 function player(symbol) {
   const board = gameBoard.getBoard();
+  const flatBoard = board.flat();
   let hasWon = false;
 
-  const placeMark = function(row, column) {
-    row = prompt("Enter Row:")
-    column = prompt("Enter Column:")
-    if (!(board[row][column].length)) {
-      board[row][column].push(symbol);
+  const placeMark = function(cell) {
+    index = (cell.id.slice(-1) - 1);
+    console.log(index);
+    if (!(cell.hasChildNodes())) {
+      flatBoard[index].push(symbol);
     } else {
       alert("That space is taken!");
-      placeMark();
     }
   }
 
@@ -130,8 +130,22 @@ const DOMController = (function() {
     }
   }
 
-  return { grid, renderBoard };
+  return { grid, cells, renderBoard };
 })();
+
+player = gameController.getActivePlayer();
+
+const markCell = (event) => {
+  console.log("Cell Clicked");
+  console.log(event.target);
+  player.placeMark(event.target);
+  DOMController.renderBoard(gameBoard.getBoard());
+}
+
+for (let i = 0; i < cells.length; i++) {
+  console.log(cells[i]);
+  cells[i].addEventListener("click", markCell);
+}
 
 // TESTING
 
