@@ -57,3 +57,8 @@ main {
   background-color: red;
   transition: background-color .15s ease-in-out;
 }
+
+.cell.win {
+  background-color: green;
+  transition: background-color .15s ease-in-out;
+}
