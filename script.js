@@ -1,6 +1,6 @@
 // GAMEBOARD
 
-const gameBoard = (function() {
+const gameBoard = (function () {
   const board = [];
   const rows = 3;
   const columns = 3;
@@ -30,7 +30,7 @@ const gameBoard = (function() {
         }
       }
     }
-  }
+  };
 
   return { printBoard, getBoard, fillBoard };
 })();
@@ -42,25 +42,24 @@ function player(symbol) {
   const flatBoard = board.flat();
   let hasWon = false;
 
-  const placeMark = function(cell) {
-    index = (cell.id.slice(-1) - 1);
-    console.log(index);
-    if (!(cell.hasChildNodes())) {
+  const placeMark = function (cell) {
+    index = cell.id.slice(-1) - 1;
+    if (!cell.hasChildNodes()) {
       flatBoard[index].push(symbol);
     } else {
       // apply class for red
       cell.classList.add("invalid");
       // setTimeout(removeClass, delay);
-      setTimeout((() => cell.classList.remove("invalid")), 150);
+      setTimeout(() => cell.classList.remove("invalid"), 150);
     }
-  }
+  };
 
   return { placeMark, hasWon, symbol };
 }
 
 // CONTROLLER
 
-const gameController = (function() {
+const gameController = (function () {
   const player1 = player("X");
   const player2 = player("O");
   const board = gameBoard.getBoard();
@@ -68,60 +67,62 @@ const gameController = (function() {
   let activePlayer = player1;
 
   const getActivePlayer = () => activePlayer;
+
   const switchPlayer = () => {
     if (activePlayer == player1) {
       activePlayer = player2;
     } else {
       activePlayer = player1;
-    };
+    }
   };
-  const newRound = () => gameBoard.printBoard();
-  const winMessage = () => alert("You won!");
+
   const checkWin = () => {
+    console.log(`checkWin called, activePlayer ${activePlayer.symbol}`);
     // check for filled rows
     for (row of board) {
-      rowValues = row.join('');
-      if ((rowValues == ("XXX")) || (rowValues == ("OOO"))) {
+      console.log(row);
+      rowValues = row.join("");
+      if (rowValues == "XXX" || rowValues == "OOO") {
         activePlayer.hasWon = true;
-        winMessage();
-    }
+      }
     }
     // check for filled columns
-    for (i = 0; i < 3; i ++) {
-      columns = []
+    for (i = 0; i < 3; i++) {
+      columns = [];
       for (row of board) {
-        columns.concat(row[i]);
+        columns.push(row[i]);
       }
-      colValues = columns.join('');
-      if ((colValues == ("XXX")) || (colValues == ("OOO"))) {
+      colValues = columns.join("");
+      if (colValues == "XXX" || colValues == "OOO") {
         activePlayer.hasWon = true;
-        winMessage();
       }
     }
     // check for diagonals
     diagonal1 = [].concat(board[0][0], board[1][1], board[2][2]);
     diagonal2 = [].concat(board[0][2], board[1][1], board[2][0]);
     if (
-      (diagonal1.join('') == "XXX") || (diagonal1.join('') == "OOO") 
-      || 
-      (diagonal2.join('') == "XXX") || (diagonal2.join('') == "OOO")
-      ) {
+      diagonal1.join("") == "XXX" ||
+      diagonal1.join("") == "OOO" ||
+      diagonal2.join("") == "XXX" ||
+      diagonal2.join("") == "OOO"
+    ) {
       activePlayer.hasWon = true;
-      winMessage();
     }
-  }
+  };
 
-  const playRound = () => {
-    activePlayer.placeMark();
-    newRound();
-    checkWin();
-    switchPlayer();
-  }
-  return { board, getActivePlayer, switchPlayer, newRound, playRound }
+  const winMessage = () => {
+    console.log(`winMessage called, activePlayer ${activePlayer.symbol}`);
+    console.log(`activePlayer.hasWon: ${activePlayer.hasWon}`);
+    if (activePlayer.hasWon) {
+      alert(`Player ${activePlayer.symbol} has won!`);
+    }
+  };
+
+  return { getActivePlayer, switchPlayer, checkWin, winMessage };
 })();
 
 // DOM
-const DOMController = (function() {
+const DOMController = (function () {
   const grid = document.getElementById("grid");
   cells = grid.children;
 
@@ -130,22 +131,24 @@ const DOMController = (function() {
     for (i = 0; i < cells.length; i++) {
       cells[i].innerText = flatBoard[i];
     }
-  }
+  };
 
   const markCell = (event) => {
     player = gameController.getActivePlayer();
     player.placeMark(event.target);
+    renderBoard(gameBoard.getBoard());
+    gameController.checkWin();
+    gameController.winMessage();
     gameController.switchPlayer();
-    DOMController.renderBoard(gameBoard.getBoard());
-  }
+  };
 
   const addEventListeners = (cells) => {
     for (let i = 0; i < cells.length; i++) {
       cells[i].addEventListener("click", markCell);
     }
-  }
+  };
 
-  return { renderBoard, addEventListeners };
+  return { addEventListeners };
 })();
 
 DOMController.addEventListeners(cells);
