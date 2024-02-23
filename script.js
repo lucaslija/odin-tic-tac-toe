@@ -41,6 +41,7 @@ function player(symbol) {
   const board = gameBoard.getBoard();
   const flatBoard = board.flat();
   let hasWon = false;
+  let winPosition = "";
 
   const placeMark = function (cell) {
     index = cell.id.slice(-1) - 1;
@@ -54,7 +55,7 @@ function player(symbol) {
     }
   };
 
-  return { placeMark, hasWon, symbol };
+  return { placeMark, hasWon, symbol, winPosition };
 }
 
 // CONTROLLER
@@ -79,11 +80,12 @@ const gameController = (function () {
   const checkWin = () => {
     console.log(`checkWin called, activePlayer ${activePlayer.symbol}`);
     // check for filled rows
-    for (row of board) {
-      console.log(row);
+    for (i = 0; i < 3; i++) {
+      row = board[i];
       rowValues = row.join("");
       if (rowValues == "XXX" || rowValues == "OOO") {
         activePlayer.hasWon = true;
+        activePlayer.winPosition = `row${i}`;
       }
     }
     // check for filled columns
@@ -95,6 +97,7 @@ const gameController = (function () {
       colValues = columns.join("");
       if (colValues == "XXX" || colValues == "OOO") {
         activePlayer.hasWon = true;
+        activePlayer.winPosition = `col${i}`;
       }
     }
     // check for diagonals
@@ -102,11 +105,16 @@ const gameController = (function () {
     diagonal2 = [].concat(board[0][2], board[1][1], board[2][0]);
     if (
       diagonal1.join("") == "XXX" ||
-      diagonal1.join("") == "OOO" ||
+      diagonal1.join("") == "OOO"
+    ) {
+      activePlayer.hasWon = true;
+      activePlayer.winPosition = "diagonal1";
+    } else if (
       diagonal2.join("") == "XXX" ||
       diagonal2.join("") == "OOO"
     ) {
       activePlayer.hasWon = true;
+      activePlayer.winPosition = "diagonal2";
     }
   };
 
@@ -115,6 +123,7 @@ const gameController = (function () {
     console.log(`activePlayer.hasWon: ${activePlayer.hasWon}`);
     if (activePlayer.hasWon) {
       alert(`Player ${activePlayer.symbol} has won!`);
+      console.log(activePlayer.winPosition);
     }
   };
 
@@ -138,9 +147,45 @@ const DOMController = (function () {
     player.placeMark(event.target);
     renderBoard(gameBoard.getBoard());
     gameController.checkWin();
-    gameController.winMessage();
+    markWin();
+   // gameController.winMessage();
     gameController.switchPlayer();
   };
+
+  const markWin = () => {
+    activePlayer = gameController.getActivePlayer();
+    if (activePlayer.hasWon) {
+      winLine = activePlayer.winPosition.slice(0,3);
+      winIndex = activePlayer.winPosition.slice(-1);
+      winningCells = [];
+      if (winLine == "row") {
+        if (winIndex == 0) {
+          winningCells.push(0, 1, 2);
+        } else if (winIndex == 1) {
+          winningCells.push(3, 4, 5);
+        } else {
+          winningCells.push(6, 7, 8);
+        }
+      } else if (winLine == "col") {
+        if (winIndex == 0) {
+          winningCells.push(0, 3, 6);
+        } else if (winIndex == 1) {
+          winningCells.push(1, 4, 7);
+        } else {
+          winningCells.push(2, 5, 8);
+        }
+      } else {
+        if (winIndex == 1) {
+          winningCells.push(0, 4, 8);
+        } else {
+          winningCells.push(6, 4, 2);
+        } 
+      }
+      for (cell of winningCells) {
+        cells[cell].classList.add("win");
+      }
+      }
+    }
 
   const addEventListeners = (cells) => {
     for (let i = 0; i < cells.length; i++) {
