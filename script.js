@@ -118,16 +118,7 @@ const gameController = (function () {
     }
   };
 
-  const winMessage = () => {
-    console.log(`winMessage called, activePlayer ${activePlayer.symbol}`);
-    console.log(`activePlayer.hasWon: ${activePlayer.hasWon}`);
-    if (activePlayer.hasWon) {
-      alert(`Player ${activePlayer.symbol} has won!`);
-      console.log(activePlayer.winPosition);
-    }
-  };
-
-  return { getActivePlayer, switchPlayer, checkWin, winMessage };
+  return { getActivePlayer, switchPlayer, checkWin };
 })();
 
 // DOM
@@ -148,7 +139,6 @@ const DOMController = (function () {
     renderBoard(gameBoard.getBoard());
     gameController.checkWin();
     markWin();
-   // gameController.winMessage();
     gameController.switchPlayer();
   };
 
