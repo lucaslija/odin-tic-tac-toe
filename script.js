@@ -46,9 +46,7 @@ function player(symbol) {
     if (!cell.hasChildNodes()) {
       flatBoard[index].push(symbol);
     } else {
-      // apply class for red
       cell.classList.add("invalid");
-      // setTimeout(removeClass, delay);
       setTimeout(() => cell.classList.remove("invalid"), 150);
     }
   };
