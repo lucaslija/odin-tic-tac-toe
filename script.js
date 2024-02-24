@@ -140,7 +140,8 @@ const DOMController = (function () {
     gameController.checkWin();
     if (player.hasWon) {
       markWin(player);
-      showModal();
+      showModal(player);
+      endGame();
     }
     gameController.switchPlayer();
   };
@@ -177,9 +178,15 @@ const DOMController = (function () {
     }
   }
 
-  const showModal = () => {
+  const showModal = (activePlayer) => {
     modal = document.getElementById("modal");
+    text = document.getElementById("modal-text");
     modal.classList.add("active");
+    text.innerText = `Player ${activePlayer.symbol} has won!`;
+  }
+
+  const endGame = () => {
+    grid.classList.add("game-over");
   }
 
   const addEventListeners = (cells) => {

@@ -43,6 +43,10 @@ main {
     "7 8 9";
 }
 
+#grid.game-over {
+  pointer-events: none;
+}
+
 .cell {
   height: 30vh;
   width: 30vh;
@@ -69,11 +73,11 @@ main {
 #modal {
   z-index: 2;
   position: absolute;
-  width: 40vw;
   background-color: white;
   color: green;
   font-size: 5em;
-  padding: 1em;
+  font-weight: bold;
+  padding: .5em;
   border-radius: 1em;
   display: flex;
   justify-content: center;
@@ -84,7 +88,7 @@ main {
 }
 
 #modal.active {
-  opacity: 0.75;
+  opacity: 0.85;
 }
 
 #modal-text {
