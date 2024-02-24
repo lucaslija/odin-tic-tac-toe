@@ -193,7 +193,3 @@ const DOMController = (function () {
 })();
 
 DOMController.addEventListeners(cells);
-
-// TESTING
-
-// gameBoard.printBoard();
