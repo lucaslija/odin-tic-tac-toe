@@ -12,8 +12,6 @@ const gameBoard = (function () {
     }
   }
 
-  // print board
-  const printBoard = () => console.log(board);
   // get board
   const getBoard = () => board;
 
@@ -32,7 +30,7 @@ const gameBoard = (function () {
     }
   };
 
-  return { printBoard, getBoard, fillBoard };
+  return { getBoard, fillBoard };
 })();
 
 // PLAYER
