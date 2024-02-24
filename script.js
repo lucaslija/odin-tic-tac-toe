@@ -138,44 +138,49 @@ const DOMController = (function () {
     player.placeMark(event.target);
     renderBoard(gameBoard.getBoard());
     gameController.checkWin();
-    markWin();
+    if (player.hasWon) {
+      markWin(player);
+      showModal();
+    }
     gameController.switchPlayer();
   };
 
-  const markWin = () => {
-    activePlayer = gameController.getActivePlayer();
-    if (activePlayer.hasWon) {
-      winLine = activePlayer.winPosition.slice(0,3);
-      winIndex = activePlayer.winPosition.slice(-1);
-      winningCells = [];
-      if (winLine == "row") {
-        if (winIndex == 0) {
-          winningCells.push(0, 1, 2);
-        } else if (winIndex == 1) {
-          winningCells.push(3, 4, 5);
-        } else {
-          winningCells.push(6, 7, 8);
-        }
-      } else if (winLine == "col") {
-        if (winIndex == 0) {
-          winningCells.push(0, 3, 6);
-        } else if (winIndex == 1) {
-          winningCells.push(1, 4, 7);
-        } else {
-          winningCells.push(2, 5, 8);
-        }
+  const markWin = (player) => {
+    winLine = player.winPosition.slice(0,3);
+    winIndex = player.winPosition.slice(-1);
+    winningCells = [];
+    if (winLine == "row") {
+      if (winIndex == 0) {
+        winningCells.push(0, 1, 2);
+      } else if (winIndex == 1) {
+        winningCells.push(3, 4, 5);
       } else {
-        if (winIndex == 1) {
-          winningCells.push(0, 4, 8);
-        } else {
-          winningCells.push(6, 4, 2);
-        } 
+        winningCells.push(6, 7, 8);
       }
-      for (cell of winningCells) {
-        cells[cell].classList.add("win");
+    } else if (winLine == "col") {
+      if (winIndex == 0) {
+        winningCells.push(0, 3, 6);
+      } else if (winIndex == 1) {
+        winningCells.push(1, 4, 7);
+      } else {
+        winningCells.push(2, 5, 8);
       }
-      }
+    } else {
+      if (winIndex == 1) {
+        winningCells.push(0, 4, 8);
+      } else {
+        winningCells.push(6, 4, 2);
+      } 
     }
+    for (cell of winningCells) {
+      cells[cell].classList.add("win");
+    }
+  }
+
+  const showModal = () => {
+    modal = document.getElementById("modal");
+    modal.classList.add("active");
+  }
 
   const addEventListeners = (cells) => {
     for (let i = 0; i < cells.length; i++) {
